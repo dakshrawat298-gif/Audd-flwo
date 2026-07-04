@@ -10,6 +10,16 @@
 [![AI Agent Track](https://img.shields.io/badge/Track-AI_Agent-7C5CFF?style=for-the-badge&labelColor=0A0A0A)](#)
 [![Gemini](https://img.shields.io/badge/Gemini-Intent_Engine-4285F4?style=for-the-badge&labelColor=0A0A0A&logo=googlegemini&logoColor=white)](#)
 
+<br/>
+
+### 🌐 Live Application
+
+[![Launch Live Demo](https://img.shields.io/badge/🚀_Launch_Live_Demo-Try_it_now-00FFAA?style=for-the-badge&labelColor=0A0A0A)](https://audd-flwo-api-server.vercel.app/activity)
+
+**[audd-flwo-api-server.vercel.app](https://audd-flwo-api-server.vercel.app/activity)**
+
+<br/>
+
 ![React](https://img.shields.io/badge/React-18-149ECA?style=flat-square&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)
