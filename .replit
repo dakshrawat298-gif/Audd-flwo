@@ -1,0 +1,30 @@
+modules = ["nodejs-24"]
+
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+runButton = "Project"
+
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+DEPLOYER_ADDRESS = "0x1d7358E3CFF8694A8eaA5d516a9B63B17c759349"
+AGENT_ADDRESS = "0x9d43b2CF974f8942d53c0540414822C49845beb9"
+BOTCHAIN_RPC_URL = "https://rpc.bohr.life"
+BOTCHAIN_CHAIN_ID = "968"
+
+[userenv.development]

@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00F0FF;
+  --color-secondary: #7000FF;
+  --color-accent: #FFFFFF;
+
+  --color-bg-light: #0A0A0B;
+  --color-bg-dark: #020202;
+  --color-bg-muted: #111113;
+
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #8892B0;
+  --color-text-muted: #666D80;
+  --color-text-inverse: #000000;
+
+  --color-success: #00FF94;
+  --color-warning: #FFB000;
+  --color-error: #FF3B30;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.glass-panel {
+  background: rgba(20, 20, 25, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.glow-text {
+  text-shadow: 0 0 30px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.2);
+}
+
+.neon-border {
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05);
+}
+
+.device-frame {
+  border-radius: 40px;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.device-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 40px;
+  border: 1px solid rgba(255,255,255,0.15);
+  pointer-events: none;
+}

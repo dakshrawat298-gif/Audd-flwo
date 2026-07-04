@@ -1,0 +1,544 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Audd Flow — AI-governed smart treasury & automated payroll on BOT Chain
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: config
+    description: Network + deployment configuration
+  - name: treasury
+    description: Treasury balances, guardrails, controls
+  - name: employees
+    description: Employee allow-list
+  - name: streams
+    description: Continuous salary streams
+  - name: agent
+    description: AI agent intents (plan + execute)
+  - name: activity
+    description: On-chain activity feed
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /config:
+    get:
+      operationId: getConfig
+      tags: [config]
+      summary: Network and deployment config
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppConfig"
+  /treasury:
+    get:
+      operationId: getTreasury
+      tags: [treasury]
+      summary: Treasury summary (balances, guardrails, status)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TreasurySummary"
+  /treasury/pause:
+    post:
+      operationId: pauseTreasury
+      tags: [treasury]
+      summary: Pause all agent spending
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TxResult"
+  /treasury/unpause:
+    post:
+      operationId: unpauseTreasury
+      tags: [treasury]
+      summary: Resume agent spending
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TxResult"
+  /treasury/guardrails:
+    post:
+      operationId: updateGuardrail
+      tags: [treasury]
+      summary: Update per-tx and daily caps for a token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GuardrailUpdateRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TxResult"
+  /employees:
+    get:
+      operationId: listEmployees
+      tags: [employees]
+      summary: List allow-listed employees
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Employee"
+    post:
+      operationId: addEmployee
+      tags: [employees]
+      summary: Add an employee to the allow-list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmployeeRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeMutationResult"
+  /employees/{address}:
+    patch:
+      operationId: updateEmployee
+      tags: [employees]
+      summary: Activate or deactivate an employee
+      parameters:
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEmployeeRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TxResult"
+  /streams:
+    get:
+      operationId: listStreams
+      tags: [streams]
+      summary: List salary streams
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Stream"
+    post:
+      operationId: createStream
+      tags: [streams]
+      summary: Create a salary stream
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStreamRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TxResult"
+  /streams/{id}/claim:
+    post:
+      operationId: claimStream
+      tags: [streams]
+      summary: Claim accrued stream funds
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TxResult"
+  /streams/{id}/stop:
+    post:
+      operationId: stopStream
+      tags: [streams]
+      summary: Stop a salary stream
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TxResult"
+  /agent/intents:
+    get:
+      operationId: listIntents
+      tags: [agent]
+      summary: List agent intents (audit log)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgentIntent"
+    post:
+      operationId: createIntent
+      tags: [agent]
+      summary: Parse a natural-language instruction into a validated plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIntentRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentIntent"
+  /agent/intents/{id}:
+    get:
+      operationId: getIntent
+      tags: [agent]
+      summary: Get a single intent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentIntent"
+  /agent/intents/{id}/execute:
+    post:
+      operationId: executeIntent
+      tags: [agent]
+      summary: Execute a validated intent on-chain via the agent signer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentIntent"
+  /activity:
+    get:
+      operationId: listActivity
+      tags: [activity]
+      summary: Recent on-chain activity
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityEvent"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+    TokenInfo:
+      type: object
+      properties:
+        symbol: { type: string }
+        address: { type: string }
+        decimals: { type: integer }
+      required: [symbol, address, decimals]
+    NetworkConfig:
+      type: object
+      properties:
+        name: { type: string }
+        chainId: { type: integer }
+        rpcUrl: { type: string }
+        explorerUrl: { type: string }
+        faucetUrl: { type: string }
+        nativeToken: { $ref: "#/components/schemas/TokenInfo" }
+        ausdToken:
+          oneOf:
+            - $ref: "#/components/schemas/TokenInfo"
+            - type: "null"
+      required: [name, chainId, rpcUrl, explorerUrl, faucetUrl, nativeToken]
+    DeploymentInfo:
+      type: object
+      properties:
+        deployed: { type: boolean }
+        owner: { type: string, nullable: true }
+        agent: { type: string, nullable: true }
+        treasuryAddress: { type: string, nullable: true }
+        ausdAddress: { type: string, nullable: true }
+        deployedAtBlock: { type: integer, nullable: true }
+        deployedAt: { type: string, nullable: true }
+      required: [deployed]
+    AppConfig:
+      type: object
+      properties:
+        network: { $ref: "#/components/schemas/NetworkConfig" }
+        deployment: { $ref: "#/components/schemas/DeploymentInfo" }
+      required: [network, deployment]
+    TokenBalance:
+      type: object
+      properties:
+        token: { type: string }
+        symbol: { type: string }
+        decimals: { type: integer }
+        raw: { type: string }
+        formatted: { type: string }
+      required: [token, symbol, decimals, raw, formatted]
+    Guardrail:
+      type: object
+      properties:
+        token: { type: string }
+        symbol: { type: string }
+        perTxCap: { type: string }
+        perTxCapFormatted: { type: string }
+        dailyCap: { type: string }
+        dailyCapFormatted: { type: string }
+        spentToday: { type: string }
+        spentTodayFormatted: { type: string }
+        remainingToday: { type: string }
+        remainingTodayFormatted: { type: string }
+      required:
+        [token, symbol, perTxCap, perTxCapFormatted, dailyCap, dailyCapFormatted, spentToday, spentTodayFormatted, remainingToday, remainingTodayFormatted]
+    TreasurySummary:
+      type: object
+      properties:
+        treasuryAddress: { type: string }
+        paused: { type: boolean }
+        balances:
+          type: array
+          items: { $ref: "#/components/schemas/TokenBalance" }
+        guardrails:
+          type: array
+          items: { $ref: "#/components/schemas/Guardrail" }
+        employeeCount: { type: integer }
+        activeEmployeeCount: { type: integer }
+        monthlyPayroll: { type: string }
+        monthlyPayrollFormatted: { type: string }
+      required:
+        [treasuryAddress, paused, balances, guardrails, employeeCount, activeEmployeeCount, monthlyPayroll, monthlyPayrollFormatted]
+    Employee:
+      type: object
+      properties:
+        address: { type: string }
+        name: { type: string }
+        role: { type: string }
+        salary: { type: string }
+        salaryFormatted: { type: string }
+        salaryToken: { type: string }
+        salarySymbol: { type: string }
+        active: { type: boolean }
+        addedAt: { type: integer }
+      required: [address, name, role, salary, salaryFormatted, salaryToken, salarySymbol, active, addedAt]
+    CreateEmployeeRequest:
+      type: object
+      properties:
+        address: { type: string }
+        name: { type: string }
+        role: { type: string }
+        salary: { type: string, description: "Human amount, e.g. '6000'" }
+        token: { type: string, description: "'aUSD' or 'BOT'", default: "aUSD" }
+      required: [address, name, role, salary]
+    UpdateEmployeeRequest:
+      type: object
+      properties:
+        active: { type: boolean }
+      required: [active]
+    EmployeeMutationResult:
+      type: object
+      properties:
+        txHash: { type: string }
+        explorerUrl: { type: string }
+        employee: { $ref: "#/components/schemas/Employee" }
+      required: [txHash, explorerUrl]
+    Stream:
+      type: object
+      properties:
+        id: { type: integer }
+        to: { type: string }
+        toName: { type: string }
+        token: { type: string }
+        symbol: { type: string }
+        ratePerSecond: { type: string }
+        ratePerDayFormatted: { type: string }
+        start: { type: integer }
+        stop: { type: integer }
+        lastClaim: { type: integer }
+        claimed: { type: string }
+        claimedFormatted: { type: string }
+        claimable: { type: string }
+        claimableFormatted: { type: string }
+        active: { type: boolean }
+      required:
+        [id, to, toName, token, symbol, ratePerSecond, ratePerDayFormatted, start, stop, lastClaim, claimed, claimedFormatted, claimable, claimableFormatted, active]
+    CreateStreamRequest:
+      type: object
+      properties:
+        to: { type: string }
+        ratePerDay: { type: string, description: "Human amount per day, e.g. '200'" }
+        token: { type: string, default: "aUSD" }
+        durationDays: { type: integer, nullable: true }
+      required: [to, ratePerDay]
+    GuardrailUpdateRequest:
+      type: object
+      properties:
+        token: { type: string, description: "'aUSD' or 'BOT'" }
+        perTxCap: { type: string }
+        dailyCap: { type: string }
+      required: [token, perTxCap, dailyCap]
+    GuardrailCheck:
+      type: object
+      properties:
+        ok: { type: boolean }
+        violations:
+          type: array
+          items: { type: string }
+      required: [ok, violations]
+    PlanAction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [pay, payroll, stream, pause, unpause, guardrail, unknown]
+        description: { type: string }
+        token: { type: string, nullable: true }
+        tokenSymbol: { type: string, nullable: true }
+        amount: { type: string, nullable: true }
+        amountFormatted: { type: string, nullable: true }
+        recipient: { type: string, nullable: true }
+        recipientName: { type: string, nullable: true }
+      required: [type, description]
+    AgentPlan:
+      type: object
+      properties:
+        intent: { type: string }
+        category: { type: string }
+        feasible: { type: boolean }
+        notes: { type: string, nullable: true }
+        actions:
+          type: array
+          items: { $ref: "#/components/schemas/PlanAction" }
+      required: [intent, category, feasible, actions]
+    AgentIntent:
+      type: object
+      properties:
+        id: { type: integer }
+        prompt: { type: string }
+        category: { type: string }
+        summary: { type: string }
+        status:
+          type: string
+          enum: [planned, executed, failed, rejected]
+        reasoning: { type: string }
+        plan: { $ref: "#/components/schemas/AgentPlan" }
+        validation: { $ref: "#/components/schemas/GuardrailCheck" }
+        txHashes:
+          type: array
+          items: { type: string }
+        error: { type: string, nullable: true }
+        createdAt: { type: string }
+        executedAt: { type: string, nullable: true }
+      required: [id, prompt, category, summary, status, reasoning, plan, validation, txHashes, createdAt]
+    CreateIntentRequest:
+      type: object
+      properties:
+        prompt: { type: string }
+      required: [prompt]
+    TxResult:
+      type: object
+      properties:
+        txHash: { type: string }
+        status: { type: string }
+        explorerUrl: { type: string }
+      required: [txHash, status, explorerUrl]
+    ActivityEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [payment, intent, stream_created, stream_claimed, deposit, paused, unpaused, guardrail, employee]
+        title: { type: string }
+        subtitle: { type: string }
+        amount: { type: string, nullable: true }
+        amountFormatted: { type: string, nullable: true }
+        symbol: { type: string, nullable: true }
+        address: { type: string, nullable: true }
+        txHash: { type: string, nullable: true }
+        explorerUrl: { type: string, nullable: true }
+        blockNumber: { type: integer, nullable: true }
+        timestamp: { type: integer, nullable: true }
+      required: [type, title, subtitle]
