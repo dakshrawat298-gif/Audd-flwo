@@ -58,7 +58,7 @@ flowchart LR
         E --> F["⚙️ executePayroll()<br/>createStream() · withdraw()"]
     end
 
-    F --> G["🔗 Verified Tx Hash<br/><code>0xabcfdd7d…9397a25</code>"]
+    F --> G["🔗 Verified Tx Hash<br/><code>0xb309b2ac…b209d59</code>"]
     G --> H["👁️ Explorer<br/>scan.bohr.life"]
 
     classDef ai fill:#4285F4,stroke:#fff,color:#fff;
@@ -108,7 +108,7 @@ A restrained, cinematic interface — deep blacks, a single kinetic accent, and 
 | 🌐 **Live App** | `<!-- PASTE DEPLOYED URL HERE -->` |
 | 📜 **Treasury Contract** | [`0x9e18AF3E5CD59F56f95E24fF0421A7a3ff2a7719`](https://scan.bohr.life/address/0x9e18AF3E5CD59F56f95E24fF0421A7a3ff2a7719) |
 | 💵 **aUSD Token** | [`0xC053E2ECb165edE3aa54dE4E273636387A05aA98`](https://scan.bohr.life/address/0xC053E2ECb165edE3aa54dE4E273636387A05aA98) |
-| 🔗 **Sample Tx Hash** | [`0xabcfdd7d8909488243425f2cc65a0afe7f9397a25`](https://scan.bohr.life/tx/0xabcfdd7d8909488243425f2cc65a0afe7f9397a25) |
+| 🔗 **Sample Tx Hash** | [`0xb309b2ac480f12bdb85ac2a468d16bcc38bf47f55b28b39e39039eb88b209d59`](https://scan.bohr.life/tx/0xb309b2ac480f12bdb85ac2a468d16bcc38bf47f55b28b39e39039eb88b209d59) |
 | ⛓️ **Chain ID** | `968` &nbsp;(hex `0x3C8`) |
 | 📡 **RPC URL** | `https://rpc.bohr.life` |
 | 🔍 **Explorer** | `https://scan.bohr.life` |
