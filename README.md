@@ -14,9 +14,9 @@
 
 ### 🌐 Live Application
 
-[![Launch Live Demo](https://img.shields.io/badge/🚀_Launch_Live_Demo-Try_it_now-00FFAA?style=for-the-badge&labelColor=0A0A0A)](https://audd-flwo-api-server.vercel.app/activity)
+[![Launch Live Demo](https://img.shields.io/badge/🚀_Launch_Live_Demo-Try_it_now-00FFAA?style=for-the-badge&labelColor=0A0A0A)](https://audd-flwo-api-server.vercel.app/)
 
-**[audd-flwo-api-server.vercel.app](https://audd-flwo-api-server.vercel.app/activity)**
+**[audd-flwo-api-server.vercel.app](https://audd-flwo-api-server.vercel.app/)**
 
 <br/>
 
