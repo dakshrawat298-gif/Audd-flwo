@@ -114,8 +114,8 @@ A restrained, cinematic interface — deep blacks, a single kinetic accent, and 
 
 | Field | Value |
 |-------|-------|
-| 🎬 **Demo Video** | `<!-- PASTE X/TWITTER DEMO LINK HERE -->` |
-| 🌐 **Live App** | `<!-- PASTE DEPLOYED URL HERE -->` |
+| 🎬 **Demo Video** | [Watch Demo on YouTube](https://youtu.be/HOTYtAoXn7k?si=NMfAx1nlrMxVYJ4r) |
+| 🌐 **Live App** | [Launch Live App](https://audd-flwo-api-server.vercel.app/activity) |
 | 📜 **Treasury Contract** | [`0x9e18AF3E5CD59F56f95E24fF0421A7a3ff2a7719`](https://scan.bohr.life/address/0x9e18AF3E5CD59F56f95E24fF0421A7a3ff2a7719) |
 | 💵 **aUSD Token** | [`0xC053E2ECb165edE3aa54dE4E273636387A05aA98`](https://scan.bohr.life/address/0xC053E2ECb165edE3aa54dE4E273636387A05aA98) |
 | 🔗 **Sample Tx Hash** | [`0xb309b2ac480f12bdb85ac2a468d16bcc38bf47f55b28b39e39039eb88b209d59`](https://scan.bohr.life/tx/0xb309b2ac480f12bdb85ac2a468d16bcc38bf47f55b28b39e39039eb88b209d59) |
